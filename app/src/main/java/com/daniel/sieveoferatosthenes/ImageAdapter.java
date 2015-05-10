@@ -1,25 +1,35 @@
 package com.daniel.sieveoferatosthenes;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ListAdapter;
 
+import java.util.Arrays;
+
 /**
  * Created by Daniel on 5/8/2015.
  */
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter extends ArrayAdapter {
     private Context mContext;
     private int mCount;
+    private boolean setBlueBackground = false;
+    private int[] gridColors;
 
-    public ImageAdapter(Context c, int count) {
+    public ImageAdapter(Context c, int resource, int count) {
+        super(c, resource);
         mContext = c;
         mCount = count;
+        gridColors = new int[mCount];
+        Arrays.fill(gridColors,Color.LTGRAY);
     }
+
 
     public int getCount() {
         return mCount;
@@ -43,15 +53,20 @@ public class ImageAdapter extends BaseAdapter {
             textView.setGravity(Gravity.CENTER);
             textView.setLayoutParams(new GridView.LayoutParams(100, 100));
 
-            //textView;
-            //textView.setPadding(8, 8, 8, 8);
         } else {
             textView = (TextView) convertView;
         }
 
-        textView.setBackgroundColor(0xfff00000);
+
+        textView.setBackgroundColor(gridColors[position]);
+
         textView.setText("" + position);
         return textView;
+    }
+
+    public void setPositionColor(int position, int color) {
+        gridColors[position] = color;
+        notifyDataSetChanged();
     }
 
 }
