@@ -7,30 +7,54 @@
     android:id="@+id/relativeLayout"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/inputLayout"
         android:layout_alignParentTop="true"
         android:background="#a9a9a9"
-        >
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:id="@+id/textView"
-            android:text="All primes lower this number:"
-            />
+            android:text="All primes less than\n or equal to this number:"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+
+
+        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+        <LinearLayout
+            android:focusable="true" android:focusableInTouchMode="true"
+            android:layout_width="0px" android:layout_height="0px"
+            android:inputType="numberSigned"/>
+
+        <!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
+             to prevent the dummy from receiving focus again -->
+
+        <AutoCompleteTextView android:id="@+id/autotext"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"
+            android:inputType="numberSigned" android:imeOptions="actionDone"
+            android:layout_gravity="center_vertical" android:gravity="center_vertical"
+            android:layout_centerVertical="true" android:layout_toEndOf="@+id/textView"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:inputType="numberSigned"
             android:ems="10"
-            android:id="@+id/editText"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:id="@+id/inputEditText"
+            android:layout_centerVertical="true"
+            android:layout_alignEnd="@+id/autotext"
+            android:layout_toEndOf="@+id/textView" />
+
+    </RelativeLayout>
 
 
     <HorizontalScrollView

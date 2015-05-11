@@ -66,7 +66,7 @@ public class ImageAdapter extends ArrayAdapter {
 
     public void setPositionColor(int position, int color) {
         gridColors[position] = color;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
 }
