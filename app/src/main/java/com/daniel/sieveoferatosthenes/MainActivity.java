@@ -26,21 +26,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 
 public class MainActivity extends ActionBarActivity {
 
-    private boolean mIsPlaying;
     private int primesLE;
     private GridView mGridView;
     private ImageAdapter mAdapter;
-    private Thread mThread;
-    private int i;
+    private TextView mTextView;
+
 
     private void dataVisualization(){
 
         int numOfColumns = (int)Math.round(Math.sqrt((double) primesLE));
-        //int numOfRows = (int)Math.ceil((double)primesLE/(double)numOfColumns);
+
         ViewGroup.LayoutParams layoutParams;
+
 
         layoutParams = mGridView.getLayoutParams();
         layoutParams.width = 150*numOfColumns; //this is in pixels
@@ -56,15 +61,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mIsPlaying = false;
         primesLE = 0;
-        i = 0;
-
 
         View relativeLayout = findViewById(R.id.relativeLayout);
-        View title_horizontalScrollView = relativeLayout.findViewById(R.id.title_horizontalScrollView);
-        View dataLayout = title_horizontalScrollView.findViewById(R.id.dataLayout);
+        View dataView = relativeLayout.findViewById(R.id.dataView);
+        View dataLayout = dataView.findViewById(R.id.dataLayout);
         mGridView = (GridView) dataLayout.findViewById(R.id.mGridView);
+        View outputLayout = relativeLayout.findViewById(R.id.outputLayout);
+        View outputView = outputLayout.findViewById(R.id.outputView);
+        mTextView = (TextView)outputView.findViewById(R.id.mTextView);
+
+
 
         dataVisualization();
 
@@ -102,6 +109,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 inputEditText.getText().clear();
+                mTextView.setText("");
             }
         });
     }
@@ -116,21 +124,11 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    private void playSoE(){
-
-
-        for(int i = 0; i < primesLE; i++) {
-            mAdapter.setPositionColor(i, 0xffff0000 + 0x100 * i);
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    mAdapter.notifyDataSetChanged();
-                }
-            }, 1000);
-
-        }
+    private void playSoE(MenuItem item){
+            item.setTitle("Wait");
+            item.setIcon(0);
+            DataVisualizationTask dataVisTask = new DataVisualizationTask(primesLE, mAdapter, mTextView);
+             dataVisTask.execute();
     }
 
     @Override
@@ -139,24 +137,15 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Log.d("Menu","Button Pressed");
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         else if (id == R.id.action_status){
-            if(mIsPlaying) {
-                mIsPlaying = false;
-                item.setIcon(R.drawable.ic_action_play);
-                item.setTitle("Play");
-                playSoE();
-            }
-            else {
-                mIsPlaying = true;
-                item.setIcon(R.drawable.ic_action_pause);
-                item.setTitle("Pause");
-            }
+            playSoE(item);
+            item.setTitle("Play");
+            item.setIcon(R.drawable.ic_action_play);
             return true;
         }
 

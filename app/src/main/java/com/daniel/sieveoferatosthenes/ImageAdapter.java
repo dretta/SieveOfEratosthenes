@@ -60,13 +60,13 @@ public class ImageAdapter extends ArrayAdapter {
 
         textView.setBackgroundColor(gridColors[position]);
 
-        textView.setText("" + position);
+        textView.setText("" + (1 + position));
         return textView;
     }
 
     public void setPositionColor(int position, int color) {
-        gridColors[position] = color;
-        //notifyDataSetChanged();
+        if(gridColors[position] == Color.LTGRAY)
+            gridColors[position] = color;
     }
 
 }
