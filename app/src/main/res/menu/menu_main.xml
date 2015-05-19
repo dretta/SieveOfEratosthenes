@@ -3,16 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_status"
         android:icon="@drawable/ic_action_play"
-        android:title="Play"
+        android:title="@string/Play"
         app:showAsAction="always"/>
-    <!--
-    <item android:id="@+id/action_stop"
-        android:icon="@drawable/ic_action_stop"
-        android:title="Stop"
-        app:showAsAction="always"/>
-    -->
-    <item android:id="@+id/action_settings"
-            android:title="@string/action_settings"
-            app:showAsAction="never"  />
+
     </menu>
 

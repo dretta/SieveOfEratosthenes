@@ -1,42 +1,26 @@
 package com.daniel.sieveoferatosthenes;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
-import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private int primesLE;
+    private int primesLE; //Less than or Equal to
     private GridView mGridView;
-    private ImageAdapter mAdapter;
+    private TextViewAdapter mAdapter;
     private TextView mTextView;
 
 
@@ -46,12 +30,11 @@ public class MainActivity extends ActionBarActivity {
 
         ViewGroup.LayoutParams layoutParams;
 
-
         layoutParams = mGridView.getLayoutParams();
         layoutParams.width = 150*numOfColumns; //this is in pixels
         mGridView.setLayoutParams(layoutParams);
         mGridView.setNumColumns(numOfColumns);
-        mAdapter = new ImageAdapter(this, android.R.layout.simple_list_item_1, primesLE);
+        mAdapter = new TextViewAdapter(this, android.R.layout.simple_list_item_1, primesLE);
         mGridView.setAdapter(mAdapter);
 
     }
@@ -71,18 +54,14 @@ public class MainActivity extends ActionBarActivity {
         View outputView = outputLayout.findViewById(R.id.outputView);
         mTextView = (TextView)outputView.findViewById(R.id.mTextView);
 
-
-
         dataVisualization();
 
         View inputLayout = relativeLayout.findViewById(R.id.inputLayout);
         final EditText inputEditText = (EditText)inputLayout.findViewById(R.id.inputEditText);
         inputEditText.setOnKeyListener(new EditText.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // Perform action on key press
 
                     InputMethodManager inputManager = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputManager.hideSoftInputFromWindow(inputEditText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -93,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
                         inputEditText.setText("Try again");
                         primesLE = 0;
                     }
+
                     if(primesLE < 0)
                         primesLE = 0;
 
@@ -105,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
                 return false;
             }
         });
+
         inputEditText.setOnClickListener(new EditText.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,9 +105,7 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    private void playSoE(MenuItem item){
-            item.setTitle("Wait");
-            item.setIcon(0);
+    private void playSoE(){
             DataVisualizationTask dataVisTask = new DataVisualizationTask(primesLE, mAdapter, mTextView);
              dataVisTask.execute();
     }
@@ -137,15 +116,9 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        else if (id == R.id.action_status){
-            playSoE(item);
-            item.setTitle("Play");
-            item.setIcon(R.drawable.ic_action_play);
+        if (id == R.id.action_status && primesLE > 0){
+            playSoE();
             return true;
         }
 

@@ -6,28 +6,22 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.ListAdapter;
 
 import java.util.Arrays;
 
-/**
- * Created by Daniel on 5/8/2015.
- */
-public class ImageAdapter extends ArrayAdapter {
+public class TextViewAdapter extends ArrayAdapter {
     private Context mContext;
     private int mCount;
-    private boolean setBlueBackground = false;
     private int[] gridColors;
 
-    public ImageAdapter(Context c, int resource, int count) {
+    public TextViewAdapter(Context c, int resource, int count) {
         super(c, resource);
         mContext = c;
         mCount = count;
         gridColors = new int[mCount];
-        Arrays.fill(gridColors,Color.LTGRAY);
+        Arrays.fill(gridColors, Color.LTGRAY);
     }
 
 
@@ -67,6 +61,9 @@ public class ImageAdapter extends ArrayAdapter {
     public void setPositionColor(int position, int color) {
         if(gridColors[position] == Color.LTGRAY)
             gridColors[position] = color;
+        notifyDataSetChanged();
     }
 
 }
+
+
